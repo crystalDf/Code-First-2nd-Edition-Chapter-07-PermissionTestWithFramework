@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">PermissionTestWithFramework</string>
+    <string name="execute">execute</string>
+</resources>
