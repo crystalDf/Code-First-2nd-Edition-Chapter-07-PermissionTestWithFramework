@@ -16,7 +16,7 @@ public class BaseActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 0;
 
-    private static PermissionListener mListener;
+    private static PermissionListener sPermissionListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,11 +32,12 @@ public class BaseActivity extends AppCompatActivity {
         ActivityCollector.removeActivity(this);
     }
 
-    public static void requestRuntimePermissions(String[] permissions, PermissionListener listener) {
+    public static void requestRuntimePermissions(String[] permissions,
+                                                 PermissionListener listener) {
 
         Activity activity = ActivityCollector.getTopActivity();
 
-        mListener = listener;
+        sPermissionListener = listener;
 
         List<String> permissionList = new ArrayList<>();
 
@@ -51,7 +52,7 @@ public class BaseActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(activity,
                     permissionList.toArray(new String[permissionList.size()]), REQUEST_CODE);
         } else {
-            mListener.onGranted();
+            sPermissionListener.onGranted();
         }
     }
 
@@ -77,9 +78,9 @@ public class BaseActivity extends AppCompatActivity {
                     }
 
                     if (deniedPermissions.isEmpty()) {
-                        mListener.onGranted();
+                        sPermissionListener.onGranted();
                     } else {
-                        mListener.onDenied(deniedPermissions);
+                        sPermissionListener.onDenied(deniedPermissions);
                     }
 
                 }
